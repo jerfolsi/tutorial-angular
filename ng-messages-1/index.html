@@ -1,0 +1,73 @@
+<!--
+    In this example we use the service 'ngMessages' to display error message associated to our form.
+    each 'ng-messages' block covers one single 'field'
+    each 'ng-messages' is placed just above the right field
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ngMessages Demo</title>
+
+    <!-- CSS -->
+    <!-- load bootstrap and add some custom css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cerulean/bootstrap.min.css">
+    <style>body { padding-top:50px; }</style>
+
+    <!-- JS -->
+    <script src="http://code.angularjs.org/1.4.0/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+    <script src="app.js"></script>
+</head>
+
+    <body class="container" ng-app="app" ng-controller="MainCtrl as main">
+
+        <!-- create our form -->
+        <form name="userForm" novalidate>
+
+            <!-- ## NAME FIELD ################################################################## -->
+            <div class="form-group" ng-class="{ 'has-error': userForm.name.$touched && userForm.name.$invalid }">
+                <div class="help-block" ng-messages="userForm.name.$error" ng-if="userForm.name.$touched">
+                    <p ng-message="minlength">Your name is too short.</p>
+                    <p ng-message="maxlength">Your name is too long.</p>
+                    <p ng-message="required">Your name is required.</p>
+                </div>
+
+                <label>Name</label>
+                <input type="text" name="name" class="form-control"
+                       ng-model="main.name"
+                       ng-minlength="5"
+                       ng-maxlength="10"
+                       required>
+            </div>
+
+            <!-- ## EMAIL FIELD ################################################################## -->
+
+            <div class="form-group" ng-class="{'has-error': userForm.name.$touched && userForm.name.$invalid }">
+                <div class="help-block" ng-messages="userForm.email.$error" ng-if="userForm.email.$touched">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="minlength">This field is too short</p>
+                    <p ng-message="maxlength">This field is too long</p>
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="email">This needs to be a valid email</p>
+                </div>
+
+                <label>Email</label>
+                <input type="email" name="email" class="form-control"
+                       ng-model="main.email"
+                       ng-minlength="5"
+                       ng-maxlength="20"
+                       required>
+            </div>
+
+            <!-- ## SUBMIT BUTTON ################################################################## -->
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Submit</button>
+            </div>
+
+        </form>
+
+    </body>
+</html>
