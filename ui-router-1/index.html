@@ -1,0 +1,48 @@
+<!--
+	- 'UI-router' is a routing framework for AngularJS. 'UI-router' is a flexible alternative to 'ngRoute'
+	- Whereas 'ngRoute' functions based on routes URL, 'ui-router' is based on states in application.
+	- ui-sref is a directive which in addition to auto-generating href attribute, binds a link [<a> tag] to a state
+	  Clicking the link will trigger a state transition with optional parameters.
+	  We have defined which states will be used [business or portfolio] when those links will be clicked
+	- notice the 'ui-view' directive in above HTML.
+	  The ui-view directive tells angularJS where to inject the templates your states refer to
+
+
+-->
+
+<html ng-app='routingDemoApp'>
+	<head>
+		<title>UI Router Demo App - Multiple,Nested States & Views</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+	</head>
+	<body class="container">
+		<h3>AngularJS UI Router Application</h3>
+
+		<nav class="navbar navbar-default row">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<ul class="nav navbar-nav">
+						<!--
+							When we click, it triggers the state 'business' or 'portfolio'
+						-->
+						<li><a ui-sref="business">Business</a></li>
+						<li><a ui-sref="portfolio">Portfolio</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="row">
+			<div class="span12">
+				<!--
+					This is where we inject the templates
+				-->
+				<div class="well" ui-view></div>        
+			</div>
+		</div> 		
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+		<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
