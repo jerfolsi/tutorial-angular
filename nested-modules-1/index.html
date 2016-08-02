@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ngMessages Demo</title>
+
+    <!-- CSS -->
+    <!-- load bootstrap and add some custom css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cerulean/bootstrap.min.css">
+    <style>body { padding-top:50px; }</style>
+
+    <!-- JS -->
+    <script src="http://code.angularjs.org/1.4.0/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+    <script src="app.js"></script>
+</head>
+
+    <body class="container" ng-app="myApplication" ng-controller="MainCtrl as main">
+        Some content ...
+        {{main.test}}
+        <div my-directive="testing">
+            Some more content ...
+        </div>
+    </body>
+</html>
