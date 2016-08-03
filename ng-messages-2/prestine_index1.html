@@ -1,0 +1,70 @@
+<!--
+  -The ngModel and ngForm directives automatically add the 'ng-dirty' class to elements with a dirty flag,
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>tuto</title>
+
+    <!-- JS -->
+    <script src="http://code.angularjs.org/1.4.0/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+
+    <style>
+
+     .ng-dirty {
+          border: red 2px solid;
+      }
+    </style>
+
+</head>
+
+    <body ng-app="myApplication" ng-controller="MainCtrl as main">
+
+      <!-- display form's internal values -->
+      <div>
+        editUserForm.$pristine = {{editUserForm.$pristine}}
+      </div>
+      <div>
+        editUserForm.$dirty = {{editUserForm.$dirty}}
+      </div>
+
+      <!-- Formulaire Angular -->
+      <form name="editUserForm">
+          <input type="text" ng-model="user.firstName" ng-model-options="{debounce:1000}"/>
+          <input type="text" ng-model="user.lastName"/>
+          <input type="submit" value="Submit"/>
+          <input type="button" value="Reset" ng-click="reset()"/>
+      </form>
+
+    </body>
+
+    <script>
+        var $app = angular.module('myApplication', []);
+        $app.controller('MainCtrl', ['$scope', function($scope){
+
+          //create an user object
+          $scope.user = {
+            firstName: "Scott",
+            lastName: "Allen"
+          };
+
+          //save the originalUser
+          $scope.originalUser = angular.copy($scope.user);
+
+          //reset function called when you click on the 'reset button'
+          $scope.reset = function(){
+              //restore the original user object
+              //It’s up to the application logic to replace the data, perhaps by making a copy of the original form data, as shown below.
+              $scope.user = angular.copy($scope.originalUser);
+
+              //call the '$setPristine()' method of the form
+              //it reset the 'dirty' state of the form
+              //$setPristine recursively sets all the controls inside the form to a pristine state, too.
+              $scope.editUserForm.$setPristine();
+          };
+      }]);
+    </script>
+
+</html>

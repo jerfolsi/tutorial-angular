@@ -1,0 +1,84 @@
+<!--
+  -The ngModel and ngForm directives automatically add the 'ng-dirty' class to elements with a dirty flag,
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>tuto</title>
+
+    <!-- JS -->
+    <script src="http://code.angularjs.org/1.4.0/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+
+    <style>
+
+     input{
+       line-height: 40px;
+       widt:400px;
+       margin-top: 10px;
+       font-size: 20px;
+     }
+
+     input.ng-dirty {
+          border: red 2px solid;
+          color: red;
+      }
+
+      input.ng-pristine {
+          border: blue 1px solid;
+          color: blue;
+      }
+
+      input.ng-valid {
+        border: green 1px solid;
+        color: green;
+      }
+    </style>
+
+</head>
+
+    <body ng-app="myApplication" ng-controller="MainCtrl as main">
+
+
+      <!-- Formulaire Angular -->
+      <form name="myForm" novalidate>
+          <div>
+            <input type="text"
+                   ng-model="message"
+                   name="message"
+                   required
+                   minlength="6"
+                   maxlength="20"
+            />
+          </div>
+          <div>
+            <input type="text"
+                   ng-model="city"
+                   name="city"
+                   required
+            />
+          </div>
+          <div><button ng-click="reset()">reset</button></div>
+      </form>
+      <div>myForm.message.$pristine : {{myForm.message.$pristine}}</div>
+      <div>myForm.city.$pristine : {{myForm.city.$pristine}}</div>
+
+    </body>
+
+    <script>
+        var $app = angular.module('myApplication', []);
+        $app.controller('MainCtrl', ['$scope', function($scope){
+
+        $scope.message = "";
+
+        $scope.reset = function(){
+          $scope.message = "";
+          $scope.city = "";
+          $scope.myForm.$setPristine();
+        }
+
+      }]);
+    </script>
+
+</html>
