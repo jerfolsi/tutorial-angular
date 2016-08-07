@@ -1,0 +1,114 @@
+<!--
+	Test Unity
+	Jasmine + mock
+	describe + beforeEach + it
+	Test Unity attached to a controller
+-->
+
+
+<html lang="fr">
+	<head>
+	    <!-- Jasmine References -->
+	    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+
+	    <!-- Angular and Angular Mock references -->
+	    <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular.min.js"></script>
+	    <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular-mocks.js"></script>
+	</head>
+
+	<body>
+		<section ng-controller="calculatorController">
+			<input type="number" placeholder="enter x" ng-model="x"> +
+			<input type="number" placeholder="enter y" ng-model="y">
+			<button ng-click="sum()">Sum</button>
+			<button ng-click="substract()">Substract</button>
+			{{z}}
+		</section>
+	</body>
+
+	<script>
+		var calculatorApp = angular.module('calculatorApp', []);
+
+		// ---------------------------------------------------------------------------------
+		//	Create a controller to handle the calculation of the sum of 2 numbers
+		// ---------------------------------------------------------------------------------
+		angular.module('calculatorApp').
+			controller('calculatorController', function calculatorController($scope){
+				//initialiaz variables x and y
+				$scope.x = 0;
+				$scope.y = 0;
+				$scope.z = 0;
+
+				//create a function that sum 2 numbers
+				$scope.sum = function(){
+					$scope.z = $scope.x + $scope.y;
+				}
+
+				$scope.substract = function(){
+					$scope.z = $scope.x - $scope.y;
+				}
+			});
+
+		// ---------------------------------------------------------------------------------
+		// load the app
+		// this is a different way from using <body ng-app="calculatorApp">...
+		// ---------------------------------------------------------------------------------
+		angular.element(document).ready(function() {
+   			angular.bootstrap(document, ['calculatorApp']);
+		});
+
+
+
+		// ---------------------------------------------------------------------------------
+		// carry out the tests
+		// ---------------------------------------------------------------------------------
+	    describe('calculator', function () {
+	    	//The ngMock module provides support to inject and mock Angular services into unit tests. In addition, 
+	    	//ngMock also extends various core ng services such that they can be inspected and controlled in a synchronous manner within test code.
+	      	//Using the ngMock functionality we can register an instance of the calculator app:
+	      	beforeEach(angular.mock.module('calculatorApp'));
+	      	//meme chose que : beforeEach(module('calculatorApp'));
+	     
+	      	var $controller;
+	     
+	     	//Note : $controller is a service here!
+		    //Once the ‘calculatorApp’ module has been initialised, we can call the inject function, 
+		    //so that we can resolve a reference of the $controller service:
+		    beforeEach(inject(function(_$controller_){
+		        $controller = _$controller_;
+		    }));
+		     
+		    describe('sum', function () {
+		        it('1 + 1 should equal 2', function () {
+		          var $scope = {};
+
+		          //Now that the app is loaded, and we’ve used the inject function 
+		          //we can use the $controller service to get an instance of our CalculatorController controller
+		          //$controller(constructor, locals);
+		          var controller = $controller('calculatorController', { $scope: $scope });
+		          
+		          $scope.x = 1;
+		          $scope.y = 2;
+		          $scope.sum();
+		          expect($scope.z).toBe(3);
+		        }); 
+		      });
+
+		    describe('substract', function () {
+		        it('5 - 2 should equal 3', function () {
+		          var $scope = {};
+		          var controller = $controller('calculatorController', { $scope: $scope });
+		          
+		          $scope.x = 5;
+		          $scope.y = 2;
+		          $scope.substract();
+		          expect($scope.z).toBe(3);
+		        }); 
+		      });
+	    });
+	</script>
+
+</html>

@@ -1,0 +1,13 @@
+<!-- partials/home.html -->
+<section class="home">
+    <h2>Page d'accueil</h2>
+    <p>
+        {{ message }}
+    </p>
+   	<ul>
+   		<li ng-repeat="book in books">
+   			
+      <a href="#/book/{{book.id}}">{{book.id}} : {{book.name}}</a>
+   		</li>
+  	</ul>
+</section>

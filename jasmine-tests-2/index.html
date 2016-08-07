@@ -1,0 +1,74 @@
+<!--
+	Test Unity
+	Jasmine
+	describe + beforeEach + it
+	Test Unity direct in the code (without any controller)
+-->
+
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+
+		//-------------------------------------------------------------------
+		// First series of unity tests
+		// We don't use a specific controller yet
+		//-------------------------------------------------------------------
+		describe('test', function () {
+			it('1 + 1 should equal 2', function() {
+				expect(1 + 1).toBe(2);
+			});
+
+			it('1 + 2 should equal 3', function() {
+				expect(1 + 2).toBe(3);
+			});
+
+			it('check a series of operations', function(){
+				expect(true).toBe(true);
+				expect(false).not.toBe(true);
+				expect(1).toEqual(1);
+				expect('foo').toEqual('foo');
+				expect('foo').not.toEqual('bar');
+			});
+
+		});
+
+
+		//-------------------------------------------------------------------
+		// Second series of unity tests
+		// We don't use a specific controller yet
+		//-------------------------------------------------------------------
+		var calculator = {
+			sum : function(x, y){
+				return x + y;
+			},
+			divide : function(x, y){
+				return (y === 0) ? 0 : Math.floor(x / y);
+			}
+		}
+
+		describe('sum', function(){
+			it('1 + 1 should equal 2', function(){
+				expect(calculator.sum(1,1)).toBe(2);
+			});
+		});
+
+		describe('divide', function(){
+			it('10 / 5 should equal 2', function(){
+				expect(calculator.divide(10, 5)).toBe(2);
+			});
+
+			it('10 / 0 should equal 0', function(){
+				expect(calculator.divide(10, 0)).toBe(0);	
+			});
+		});
+
+
+	</script>
+</html>
