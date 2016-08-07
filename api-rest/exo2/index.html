@@ -1,0 +1,86 @@
+<!doctype html>
+<html ng-app="customersApp">
+	<head>
+		<title>Hello AngularJS</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    	<script src="hello.js"></script>
+	</head>
+
+	<body>
+		<div ng-controller="myController">
+			 {{test}}
+			 {{status}}
+		</div>
+	</body>
+
+	<script>
+		var customersApp = angular.module('customersApp', []);
+		
+		customersApp.factory('dataFactory', ['$http', function($http) {
+
+			    var urlBase = '/api/customers';
+			    var dataFactory = {};
+
+			    dataFactory.getCustomers = function () {
+			        return $http.get(urlBase);
+			    };
+
+			    dataFactory.getCustomer = function (id) {
+			        return $http.get(urlBase + '/' + id);
+			    };
+
+			    dataFactory.insertCustomer = function (cust) {
+			        return $http.post(urlBase, cust);
+			    };
+
+			    dataFactory.updateCustomer = function (cust) {
+			        return $http.put(urlBase + '/' + cust.ID, cust)
+			    };
+
+			    dataFactory.deleteCustomer = function (id) {
+			        return $http.delete(urlBase + '/' + id);
+			    };
+
+			    dataFactory.getOrders = function (id) {
+			        return $http.get(urlBase + '/' + id + '/orders');
+			    };
+
+				return dataFactory;
+		}]);
+		
+		customersApp.controller('myController', ['$scope', 'dataFactory', function($scope, dataFactory){
+			$scope.test = "jerome";
+   			$scope.customers;
+   			$scope.status;
+
+ 			getCustomers();
+
+			function getCustomers() {
+        		dataFactory.getCustomers()
+		            .then(function (response) {
+		                $scope.customers = response.data;
+		            }, function (error) {
+		                $scope.status = 'Unable to load customer data: ' + error.message;
+		            });	
+   			 }
+
+   			$scope.insertCustomer = function () {
+		        //Fake customer data
+		        var cust = {
+		            ID: 10,
+		            FirstName: 'JoJo',
+		            LastName: 'Pikidily'
+		        };
+		        dataFactory.insertCustomer(cust)
+		            .then(function (response) {
+		                $scope.status = 'Inserted Customer! Refreshing customer list.';
+		                $scope.customers.push(cust);
+		            }, function(error) {
+		                $scope.status = 'Unable to insert customer: ' + error.message;
+		            });
+		    };
+
+		}]);
+
+    </script>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="js/script.js"></script>
+	</head>
+
+	<body ng-app="appGlobale">
+		
+		<section ng-controller="recetteCtrl"> 		
+			<h1>Recette de cuisine</h1>
+			<p>Entrez la liste des ingrédients</p>
+			<!-- Ajoute un ingredient à la volée -->
+			<form ng-submit="addIngredient()">
+				<input placeholder="Ajoutez un nouveau ingrédient" ng-model="newIngredient"/>
+			</form>
+
+			<!-- Affiche la liste des ingredient -->
+			<ul>
+				<li ng-repeat="ingredient in listIngredients">
+					<input type="checkbox" ng-model="ingredient.selected"/>
+					{{ingredient.name}}
+				</li>
+			</ul>
+
+			<!-- Fonctions complementaires pour agir sur la liste -->
+			<button ng-click="addSalt()">Add Salt</button>
+			<button ng-click="reverseSelection()">Reverse Selection</button>
+			<button ng-click="deleteSelection()">Delete Selection</button>
+
+		</section>
+
+
+	</body>
+</html>

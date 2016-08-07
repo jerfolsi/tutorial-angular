@@ -1,0 +1,82 @@
+<html>
+   
+   <head>
+      <title>Angular JS Filters</title>
+      <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      
+      <style>
+			.sortorder:after {
+			  content: '\25b2';   // BLACK UP-POINTING TRIANGLE
+			}
+			.sortorder.reverse:after {
+			  content: '\25bc';   // BLACK DOWN-POINTING TRIANGLE
+			}
+		</style>
+   </head>
+   
+   <body ng-app="myApp" ng-controller="myController">
+
+   		<table>
+   			<tr>
+   				<th>
+   					<button ng-click="sortBy('name')">Name</button>
+   					<span class="sortorder" ng-show="studentSortAttribute === 'name'" ng-class="{reverse:studentReverse}"></span>
+   				</th>
+   				<th>
+   					<button ng-click="sortBy('phoneNumber')">Phone Number</button>
+   					 <span class="sortorder" ng-show="studentSortAttribute === 'phoneNumber'" ng-class="{reverse:studentReverse}"></span>
+   				</th>
+   				<th>
+   					<button ng-click="sortBy('age')">Age</button>
+   					 <span class="sortorder" ng-show="studentSortAttribute === 'age'" ng-class="{reverse:studentReverse}"></span>
+   				</th>
+   			</tr>
+   			<tr ng-repeat="student in students | orderBy:studentFilter">
+   				<td>{{student.name}}</td>
+   				<td>{{student.phoneNumber}}</td>
+   				<td>{{student.age}}</td>
+   			</tr>
+   		</table>
+   		
+   </body>
+
+   <script>
+   		var myApp = angular.module('myApp', []);
+   		myApp.controller('myController', ['$scope', function($scope){
+   			
+   			//initialiaze some variables
+   			$scope.studentSortAttribute = 'age';
+   			$scope.studentReverse = false;
+   			setStudentFilter();
+
+   			//here is our array of students
+   			$scope.students = [{name : 'jerome',
+   					phoneNumber : '06645454545',
+   					age : 34},
+   					{name : 'robert',
+   					phoneNumber : '07564545445',
+   					age : 32},
+   					{name : 'tonio',
+   					phoneNumber : '05656454545',
+   					age : 51}
+   				];
+
+
+   			//function to change the type of sorting
+   			$scope.sortBy = function(sortChoice){
+   				if(sortChoice == $scope.studentSortAttribute)
+   					$scope.studentReverse = !$scope.studentReverse;
+   				$scope.studentSortAttribute = sortChoice;
+
+   				setStudentFilter();
+   			}
+
+   			//function to set up the filter to sort the list
+   			function setStudentFilter(){
+   				 $scope.studentFilter = (($scope.studentReverse === true) ? '-' : '+') + $scope.studentSortAttribute;
+   			}
+
+   		}]);
+
+   </script>
+</html>

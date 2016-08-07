@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="myMod" ng-controller="MainController">
+		</div>
+	</body>
+
+	<script>
+
+		//create a module
+		var myMod = angular.module('myMod', []);
+
+		//create a mini service (mod.value)
+		//le module expose toutes les méthodes du service $provide
+		myMod.value('greeting', function(name){
+			alert("Hello, " + name);
+		})
+
+		//create a mini service (mod.service)
+		myMod.service('greeting', function(){
+			return function(name){
+				alert("Hello, "+ name);
+			};
+		})
+
+		//create a controller
+		myMod.controller('MainController', function($scope, greeting) {
+			greeting('Ford Prefect');
+		});
+
+
+	</script>
+</html>

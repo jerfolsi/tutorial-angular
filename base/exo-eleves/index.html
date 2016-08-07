@@ -1,0 +1,68 @@
+<html>
+   <head>
+      <title>AngularJS Directives</title>
+      <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+   </head>
+   
+   <body ng-app="appStudents">
+      <section ng-controller="ctrlStudens">
+         <div ng-repeat="student in students" ng-click="selectStudent(student)">
+            {{student.firstname}} - {{student.lastname}}
+         </div>
+
+         <div>
+            Add a new Student
+            <input ng-model="newStudentFirstname" placeholder="Firstname">
+            <input ng-model="newStudentLastname" placeholder="Lastname">
+            <button ng-click="addStudent()">Add Student</button>
+         </div>
+
+         <hr>
+
+         Liste des notes de l'étudiant
+         {{studentSelected.firstname}}
+         <div ng-repeat="mark in studentSelected.marks">
+            {{mark.field}} - {{mark.mark}}
+         </div>
+         Add a mark
+         <input ng-model="newField" placeholder="Add a field">
+         <input ng-model="newMark" placeholder="Add a mark">
+         <button ng-click="addMark()">Add Mark</button>
+      </section>
+
+   </body>
+
+
+   <script>
+   		var appStudents = angular.module('appStudents', []);
+   		appStudents.controller('ctrlStudens', ['$scope', function($scope){
+            $scope.students = [];
+            $scope.studentSelected = null;
+            $scope.marks = [];
+
+            //Add a new student
+            $scope.addStudent = function(){
+               $scope.students.push({
+                  firstname : $scope.newStudentFirstname,
+                  lastname : $scope.newStudentLastname,
+                  marks : [{field: 'french', mark : 20}]
+               });
+            };
+
+            //Select a Student
+            $scope.selectStudent = function(student){
+               $scope.studentSelected = student;
+            }
+
+            //Add a new Mark
+            $scope.addMark = function(){
+               if($scope.studentSelected){
+                  $scope.studentSelected.marks.push({
+                     field: $scope.newField,
+                     mark : $scope.newMark
+                  });
+               }
+            };
+         }]);
+   </script>
+</html> 

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="myAppModule">
+    <head>
+        <meta charset="utf-8" />
+        <title>Todo List</title>        
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Factory</h1>
+        </header>
+
+        <!-- cette section sera gérée par le controller "todoCtrl" -->
+        <section ng-controller="myController">
+         	{{message}}
+
+         	 <h2>Liste des Users</h2>
+         	<ul>
+         		<li ng-repeat="user in users">{{user}}</li>
+         	</ul>
+
+         	 <h2>Liste des livres</h2>
+         	 <ul>
+         		<li ng-repeat="book in books">{{book}}</li>
+         	</ul>
+
+         	<h2>Factory Calc</h2>
+         	{{resultat1}}
+         	{{resultat2}}
+
+        </section>
+    </body>
+	<script>
+		//-----------------------------------------------------------
+		//création du module 
+		//-----------------------------------------------------------
+		var myAppModule = angular.module('myAppModule', []);
+
+		//-----------------------------------------------------------
+		//-----------------------------------------------------------
+		// création des services
+		//-----------------------------------------------------------
+		//-----------------------------------------------------------
+				
+		//******* FACTORY 1 **************************************
+		//le factory renvoi un objet avec une propriété array
+		myAppModule.factory('userService', function(){
+			//declare un objet vide
+			var fac = {};
+
+			//ajoute un propriété (array) à cet objet
+			fac.users = ['John', 'James', 'Jake', 'Jerome']; 
+
+			//retourne le service
+			//le service est un objet avec une propriété
+			return fac;
+		});
+
+		//******* FACTORY 2 **************************************
+		// le factory renvoi directement un objet avec une méthode
+		myAppModule.factory('bookService', function(){
+			//declare un objet vide
+			var fac = {};
+
+			//ajoute une méthode à cet objet
+			fac.getBooks = function(){
+				return ['livre1', 'livre2', 'livre3'];
+			}
+
+			//retourne le service
+			//le service est un objet avec une méthode
+			return fac;
+		})
+
+		//******* FACTORY 3 **************************************
+		// ici le factory renvoi une fonction qui peut recevoir
+		// des parametres et renvoyer un nouvel objet sur mesure
+		// (ca ressemble à un constructeur sauf que c'est pas appelé avec 'new')
+		myAppModule.factory('calcService', function(){
+			return function(coef){
+				
+				//créer un objet vide
+				var fac = {};
+
+				//ajoute une propriété à cet objet
+				fac.coef = coef;
+
+				//ajoute une méthode à cet objet (qui utilise le coef)
+				fac.getPuissance = function(){
+					return 10*this.coef;
+				};
+
+				//au final la fonction doit renvoyer un objet!!!
+				return fac;
+			};
+		})
+
+		//-----------------------------------------------------------
+		// création d'un service d'un controller qui utilise le service
+		// userService
+		//-----------------------------------------------------------
+		myAppModule.controller('myController', ['$scope', 'userService', 'bookService', 'calcService',
+			function($scope, userService, bookService, calcService){
+			$scope.message = "Hello from Controller"
+
+			//exemple d'appel d'un propriété d'un service
+			$scope.users = userService.users;
+
+			//exemple d'appel d'une méthode d'un service
+			$scope.books = bookService.getBooks();
+
+			//exemple d'appel à un service qui renvoi une function
+			//c'est utile pour appeler le servce et lui envoyer des parametres !
+			$scope.resultat1 = calcService(3).getPuissance();
+			$scope.resultat2 = calcService(5).getPuissance();
+			
+		}]);
+
+	</script>
+
+</html>
+
+
+
+

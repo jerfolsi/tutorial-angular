@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Hello AngularJS</title>
+		<script src="https://code.angularjs.org/1.4.2/angular.js"></script>
+		<script src="https://code.angularjs.org/1.4.2/angular-resource.min.js"></script>
+	</head>
+
+	<body ng-app="my.resource">
+		<div ng-controller="myController">
+			<div ng-repeat="user in users">
+				{{user.name}}
+			</div>
+			UserSelected : {{userSelected}}
+		</div>
+	</body>
+
+	<script>
+
+		var module = angular.module( 'my.resource', [ 'ngResource' ] );
+
+		//-------------------------------------------------------------------
+		// Le Servcice 'ResourceData' 
+		// qui servira pour tous les types d'objets : User, Facture, Book, ..
+		//-------------------------------------------------------------------	
+	
+		module.factory('ResourceData', [ '$resource', function( $resource ) {
+		    return function( url, params, methods ) {
+		      var defaults = {
+		        update: { method: 'put', isArray: false },
+		        create: { method: 'post' }
+		      };
+		      
+		      methods = angular.extend( defaults, methods );
+		 
+		     var resource = $resource(url, params, methods );
+		 
+		     resource.prototype.$save = function() {
+		       if (!this.id ) {
+		         return this.$create();
+		       }
+		       else {
+		         return this.$update();
+		       }
+		     };
+		 
+		     return resource;
+		   };
+		 }]);
+
+		//-------------------------------------------------------------------
+		// Le Servcice 'DataUser' 
+		// qui servira pour tous les types d'objets : User, Facture, Book, ..
+		//-------------------------------------------------------------------	
+		module.factory('DataUser', ['ResourceData', function(ResourceData) {
+		   return ResourceData('http://localhost:8080/api/users/:id', { id: '@id' } );
+		 }]);
+
+		//-------------------------------------------------------------------
+		// The Controller 'userController'
+		//-------------------------------------------------------------------	
+		module.controller('myController', ['$scope', 'DataUser', function($scope, DataUser){
+			//GET : userlist
+			DataUser.get().$promise.then(function(data) {
+			      $scope.users = data.list;
+			      }, function(error){alert('error');});
+
+			//GET : user(id)
+			DataUser.get({id:2}).$promise.then(function(data) {
+			      $scope.userSelected = data.name;
+			      }, function(error){alert('error');});
+
+			//POST : add a new User
+			var user1 = new DataUser;
+			user1.name = 'Kirk Bushell';
+			user1.$save();
+			
+			//PUT : update a existing user
+			var user2 = DataUser.get( { id: 2 });
+			user2.name = 'John smith';
+			user2.$update();
+		}]);
+ 
+    </script>
+</html>

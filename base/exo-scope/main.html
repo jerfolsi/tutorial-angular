@@ -1,0 +1,49 @@
+<!--
+	BONNE SOLUTION:
+	
+	ICI bien que le scope varie du SCOPE PARENT au SCOPE ENFANT
+	nous ciblons bien toujours la meme variable "myvar"
+-->
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="MyController as ctrl">
+		    SCOPE parent :
+		    <input type="text" ng-model="ctrl.myvar" />
+		    {{ ctrl.myvar }}
+		    <button ng-click="ctrl.alert()">Afficher myvar</button>
+		    
+		    <div ng-if="true">
+		        SCOPE enfant : 
+		        <input type="text" ng-model="ctrl.myvar" />
+		        {{ ctrl.myvar }}
+		        <button ng-click="ctrl.alert()">Afficher myvar</button>
+		    </div>
+		    
+   	</body>
+
+
+	<script>
+		angular.module('myApp',[])
+		.controller("MyController",function() {    
+		    // Création de la variable
+		    this.myvar = 'TOTO';
+		    
+		    // Faire un alert javascript avec myvar
+		    this.alert = function(){
+		        alert(this.myvar);
+		    };
+		});
+	</script>
+
+</html>
+
+
+
+

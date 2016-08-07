@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="myApp">
+		  <div>
+		    {{ 'World' | greet }}
+		  </div>
+		</div>
+	</body>
+
+	<script>
+
+		//You can think of a module as a container for the different parts of your app – controllers, services, filters, directives, etc.
+
+		// declare a module
+		var myAppModule = angular.module('myApp', []);
+
+		// configure the module.
+		// in this example we will create a greeting filter
+		myAppModule.filter('greet', function() {
+		 return function(name) {
+		    return 'Hello, ' + name + '!';
+		  };
+		});
+
+
+	</script>
+</html>

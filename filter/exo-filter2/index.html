@@ -1,0 +1,63 @@
+<html>
+   
+   <head>
+      <title>Angular JS Filters</title>
+      <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+   </head>
+   
+   <body ng-app="app" ng-controller="TestCtrl">
+
+   			<h2>We can use built-in Filters</h2>
+   			{{aWord | }}
+
+			<h2>Filters work on strings (customs)</h2>
+			 <p>We use app.filter('capitalize', function(){ return function(word){..}) to create a filter</p>
+  			{{aWord | capitalize}}
+  			{{aWord | length}}
+
+  			
+  			<h2>Filters work on the objects too (customs)</h2>
+  			<p>We use app.filter('stats', function(){ return function(object){..}) to create a filter</p>
+  			{{anObject.title}}
+  			{{anObject | stats}}
+		</h2>
+   </body>
+
+   <script>
+		var app = angular.module('app', []);
+		
+		//create a basic controller
+		app.controller('TestCtrl', ['$scope', function($scope){
+			$scope.aWord = "jerome";
+
+			$scope.anObject = {
+				title: 'AngularJS Up and Running',
+				author : 'Shyam eshadri',
+				price : 23.40
+			};
+		}]);
+	
+		//create a filter 'capitalize'
+		app.filter('capitalize', function(){
+			return function(word){
+				return word.toUpperCase();
+			}
+		});
+
+		//create a filter 'capitalize'
+		app.filter('length', function(){
+			return function(word){
+				return word.length;
+			}
+		})
+
+		//create a filter 'capitalize'
+		app.filter('stats', function(){
+			return function(object){
+				return object.price + " euros";
+			}
+		})
+   </script>
+
+
+ </html>

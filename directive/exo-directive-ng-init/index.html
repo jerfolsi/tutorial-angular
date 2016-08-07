@@ -1,0 +1,60 @@
+<!--
+   DIRECTIVE ng-init
+
+   This directive can be abused to add unnecessary amounts of logic into your templates. There are only a few appropriate uses of ngInit, such as for aliasing special properties of ngRepeat, as seen in the demo below; and for injecting data via server side scripting. Besides these few cases, you should use controllers rather than ngInit to initialize values on a scope.
+
+-->
+
+<html>
+   
+   <head>
+      <title>AngularJS Directives</title>
+      <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+   </head>
+   
+   <body ng-app="initExample">
+      <h1>NG-INIT Directive</h1>
+      
+      <script>
+        angular.module('initExample', [])
+          .controller('ExampleController', ['$scope', function($scope) {
+            $scope.list = [['a', 'b'], ['c', 'd']];
+          }]);
+      </script>
+
+
+      <div ng-controller="ExampleController">
+        <h1>Simple use of ng-init</h1>
+        <div ng-init="var1 = 34">
+          My variable initiated by ng-init directive = <strong>{{var1}}</strong>
+        </div>
+
+        <h1>Loop 1</h1>
+        <p>we lopp through the final elements of the 2D-Array</p>
+        <div ng-repeat="innerList in list">
+         <div ng-repeat="elementFinal in innerList">
+            {{elementFinal}}
+         </div>
+        </div>
+
+        <h1>Boucle 2</h1>
+        <p>We lopp through the final elements of the 2D-Array</p>
+        <p>Here we use $index which represents the operator offset of the repeated element (0... length-1)</p>
+        <div ng-repeat="innerList in list" ng-init="outerIndex = $index">
+          <div ng-repeat="value in innerList" ng-init="innerIndex = $index">
+             <span class="example-init">list[ {{outerIndex}} ][ {{innerIndex}} ] = {{value}};</span>
+          </div>
+        </div>
+      </div>
+      
+
+      <h1>ng-init with an array</h1>
+      <div ng-init="cityList = [{name : 'Paris', codePostal : 75000}, {name : 'Montpellier', codePostal : 34000}]">
+         <ul>
+            <li ng-repeat="city in cityList">
+               {{city.name}}
+            </li>
+         </ul>
+      </div>
+   </body>
+</html>

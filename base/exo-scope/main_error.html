@@ -1,0 +1,48 @@
+<!--
+	MAUVAISE SOLUTION:
+	
+	Le scope Parent et enfant n'étant pas le meme, il y a une confusion dans le controller avec $scope.
+	A moment donné quand on change la valeur de myvar dans le Scope enfant, ce n'est plus repercuté dans le scope parent!
+	GROS PROBLEME!!!
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="MyController">
+	    SCOPE parent :
+	    <input type="text" ng-model="myvar" />
+	    {{ myvar }}
+	    <button ng-click="alert()">Afficher myvar</button>
+	    
+	    <div ng-if="true">
+	        SCOPE enfant : 
+	        <input type="text" ng-model="myvar" />
+	        {{ myvar }}
+	        <button ng-click="alert()">Afficher myvar</button>
+	    </div>
+   	</body>
+
+
+	<script>
+		angular.module('myApp',[])
+		.controller("MyController",function($scope) {
+		    // Création de la variable
+		    $scope.myvar = 'TOTO';
+		    
+		    // Faire un alert javascript avec myvar
+		    $scope.alert = function(){
+		        alert($scope.myvar);
+		    };
+		});
+	</script>
+
+</html>
+
+
+
+

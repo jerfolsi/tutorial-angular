@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Hello AngularJS</title>
+		<script src="https://code.angularjs.org/1.4.2/angular.js"></script>
+		<script src="https://code.angularjs.org/1.4.2/angular-resource.min.js"></script>
+	</head>
+
+	<body ng-app="app.user">
+		<div ng-controller="userController">
+			<div ng-repeat="user in users">
+				{{user.name}}
+			</div>
+			<button ng-click="addUser()">add User</button>
+			<div>
+				User Selected : {{userSelected}}
+			</div>
+		</div>
+	</body>
+
+	<script>
+		var user = angular.module('app.user', ['ngResource']);
+
+		//-------------------------------------------------------------------
+		// Le Servcice 'userAPI'
+		//-------------------------------------------------------------------	
+		user.factory('userAPI', ['$resource', function($resource){
+			return $resource('http://localhost:8080/api/users/:userId', null, 
+			{
+				'update' : { method:'PUT', params: {userId: '@userId'}}
+			});
+		} ]);
+
+		//-------------------------------------------------------------------
+		// The Controller 'userController'
+		//-------------------------------------------------------------------	
+		user.controller('userController', ['$scope', 'userAPI', function($scope, userAPI) {
+			$scope.users = {};
+
+			//Perform "GET /api/users"
+			userAPI.get().$promise.then(function(data) {
+			      $scope.users = data.list;
+			      }, function(error){alert('error');});
+
+			//Perform "GET /api/users/1"
+			userAPI.get({userId:1}).$promise.then(function(data) {
+			      $scope.userSelected = data.name;
+			      }, function(error){alert('error');});
+
+			//Perform "POST /api/users"
+			var newUser2 = {name:"nameV2"};
+			userAPI.save(newUser2);
+
+			//Perform "PUT /api/users"
+			var newUser3 = {id:3, name:"nameV3"};
+			userAPI.update(newUser3);
+
+		}]);
+ 
+    </script>
+</html>

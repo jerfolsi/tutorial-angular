@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="myMod" ng-controller="MainController">
+		</div>
+	</body>
+
+	<script>
+
+		//create a module
+		var myMod = angular.module('myMod', []);
+
+		//create a service "greeting"
+		myMod.config(function($provide) {
+		  $provide.value('greeting', function(name) {
+		    alert("Hello, " + name);
+		  });
+		});		
+
+		//create a controller
+		myMod.controller('MainController', function($scope, $injector) {
+			//le service injector permet de récupérer une référence vers d'autres service
+			//c'est lui qui est responsable de ce genre de chose!
+  			var greeting = $injector.get('greeting');
+			greeting('Ford Prefect');
+		});
+
+
+	</script>
+</html>

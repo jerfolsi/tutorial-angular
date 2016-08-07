@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div ng-app="myMod" ng-controller="MainController">
+			<button ng-click="onClick()">Cliquer moi</button>
+		</div>
+	</body>
+
+	<script>
+
+		//You can think of a module as a container for the different parts of your app – controllers, services, filters, directives, etc.
+		var myMod = angular.module('myMod', []);
+
+		/*
+			----------------------------------------------------------------------------------------------------------------------------
+			----------------------------------------------------------------------------------------------------------------------------
+			Definition of the SERVICE "Greeting"
+
+			Here we've defined a new provider for a service called greeting; we can inject a variable named greeting into any injectable function (like controllers, more on that later) and Angular will call the provider's $get function in order to return a new instance of the service.
+
+			les 3 versions si dessous sont les memes
+		*/
+			
+
+			//version 1 ($provide.provider)
+			myMod.config(function($provide) {
+			  $provide.provider('greeting', function() {
+			    this.$get = function() {
+			      return function(name) {
+			        alert("Hello, " + name);
+			      };
+			    };
+			  });
+			});
+
+
+			//version 2 ($provide.factory)
+			myMod.config(function($provide) {
+			  $provide.factory('greeting', function() {
+			    return function(name) {
+			      alert("Hello, " + name);
+			    };
+			  });
+			});
+
+			//version 3/A ($provide.value)
+			myMod.config(function($provide) {
+			  $provide.value('greeting', function(name) {
+			    alert("Hello, " + name);
+			  });
+			});
+
+			//version 3/B ($provide.value) / encore plus courte
+			//pour nous simplifier la vie, Angular expose the $provide methods directement sur le module object!
+			myMod.value('greeting', function(name) {
+			    alert("Hello, " + name);
+			  });
+
+
+	
+			//versions encore plus courtes
+			/*
+			myMod.provider("greeting", ...);
+			myMod.factory("greeting", ...);
+			myMod.service("greeting", ...);
+			myMod.value("greeting", ...);
+			*/
+
+
+
+
+		/*
+			----------------------------------------------------------------------------------------------------------------------------
+			----------------------------------------------------------------------------------------------------------------------------
+			Definition of the CONTROLLER "MainController"
+
+			A Controller is an injectable function. We can  inject the Service "Greeting"
+
+			In this case, the thing that will be injected (greeting) is a function that takes a name parameter and alerts a message based on the name. We might use it like this:
+		*/
+		myMod.controller('MainController', function($scope, greeting) {
+  			$scope.onClick = function() {
+    			greeting('Ford Prefect');
+		  };
+		});
+
+
+
+
+
+	</script>
+</html>
